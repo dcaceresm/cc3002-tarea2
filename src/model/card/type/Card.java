@@ -13,9 +13,9 @@ public class Card implements ICard {
 	}
 	@Override
 	public boolean isPlayableOver(ICard otherCard) {
-		return this.c.toString().equals(otherCard.getColor().toString())
-				|| this.s.toString().equals(otherCard.getSymbol().toString())
-				|| this.c.toString().equals("Sin Color");
+		return this.c.getName().equals(otherCard.getColor().getName())
+				|| this.s.toString().equals(otherCard.getSymbol().toString());
+				
 	}
 
 	@Override

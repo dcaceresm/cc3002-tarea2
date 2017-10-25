@@ -26,15 +26,13 @@ public class Main {
     IPlayerListBuilder playerBuilder = new PlayerListBuilder();
     //TODO: Create one human player and 3 random players
     playerBuilder.addPlayer(new HumanPlayer());
-    playerBuilder.addPlayer(new HumanPlayer());
-    /*playerBuilder.addPlayer(new RandomPlayer());
+    //playerBuilder.addPlayer(new HumanPlayer());
+    //playerBuilder.addPlayer(new RandomPlayer());
     playerBuilder.addPlayer(new RandomPlayer());
-    playerBuilder.addPlayer(new RandomPlayer());*/
+    playerBuilder.addPlayer(new RandomPlayer());
     //TODO: Assign the players to playerBuilder.
     ICardPilesManager cpManager = new CardPilesManager(new StandardDeckStrategy());
     IPlayerManager pManager = new PlayerManager(playerBuilder,cpManager);
-
-    
     IGameLogic game = new GameLogic(pManager, cpManager);
     ConsoleView view = new ConsoleView(game);
     ConsoleController ctrl = new ConsoleController(game, view);

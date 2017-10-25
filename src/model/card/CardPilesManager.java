@@ -3,6 +3,7 @@ package model.card;
 import java.util.ArrayList;
 
 import model.card.deck.IDeckStrategy;
+import model.card.type.Color;
 import model.card.type.ICard;
 import model.player.type.IPlayer;
 
@@ -16,6 +17,11 @@ public class CardPilesManager implements ICardPilesManager {
 		deck.shuffle();
 		discardPile = new CardPile();
 		this.discard(this.drawCard());
+		while(this.getCurrentPlayedCard().getColor() == Color.NONE) {
+			deck.pushCards(discardPile);
+			deck.shuffle();
+			this.discard(this.drawCard());	
+		}
 	}
 	
 	@Override

@@ -9,6 +9,12 @@ public class WildDrawCard extends Card {
 		super(aColor, aSymbol);
 	}
 	
+	@Override
+	public boolean isPlayableOver(ICard otherCard) {
+		return true;
+	}
+	
+	@Override
 	public void executeAction(IGameLogic game, IController ctrl) {
 		game.addToDrawWell(4);
 		game.getCurrentPlayer().selectColor(game, ctrl);

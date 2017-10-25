@@ -38,6 +38,7 @@ public class ConsoleController implements IController {
     game.startTurn(this);
     view.updateCurrentStatus();
     IPlayer currentPlayer = game.getCurrentPlayer();
+    
     boolean cardPlayed = false;
     while (!cardPlayed) {
       ICard card = currentPlayer.getCardToPlay(game, this);

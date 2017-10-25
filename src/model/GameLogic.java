@@ -2,7 +2,10 @@ package model;
 
 import controller.IController;
 import model.card.ICardPilesManager;
+import model.card.type.Card;
+import model.card.type.Color;
 import model.card.type.ICard;
+import model.card.type.Symbol;
 import model.player.IPlayerManager;
 import model.player.type.IPlayer;
 
@@ -11,11 +14,14 @@ public class GameLogic implements IGameLogic {
 	IPlayerManager PlayerManager;
 	ICardPilesManager CardPilesManager;
 	int DrawWell;
+	ICard wildSavedColor;
+	
 	
 	public GameLogic(IPlayerManager playerManager, ICardPilesManager cpManager) {
 		DrawWell = 0;
 		PlayerManager = playerManager;
 		CardPilesManager = cpManager;
+		wildSavedColor = new Card(Color.NONE,Symbol.NONE);
 	}
 	
 	@Override
@@ -45,13 +51,16 @@ public class GameLogic implements IGameLogic {
 	public void startTurn(IController ctrl) {
 		this.autoShoutUNO(ctrl);
 		ctrl.showMessage("La carta actual en la pila de descarte es: "+CardPilesManager.getCurrentPlayedCard());
+		PlayerManager.startTurn();
 		if(!this.isDrawWellEmpty()) {
 			this.drawCardsFromWell(PlayerManager.getCurrentPlayer(), ctrl);
 			this.resetDrawWell();
 			PlayerManager.startTurn();
-		} else {
-			PlayerManager.startTurn();
-		}
+		} /*else {
+			boolean needs = PlayerManager.getCurrentPlayer().needsToDrawCard(CardPilesManager.getCurrentPlayedCard());
+			
+				
+		}*/
 	}
 
 	@Override
@@ -93,19 +102,35 @@ public class GameLogic implements IGameLogic {
 
 	@Override
 	public boolean playCard(ICard playedCard, IController ctrl) {
+		boolean isPlayable = playedCard.isPlayableOver(this.getCurrentPlayedCard()) || playedCard.isPlayableOver(wildSavedColor);
+		if(isPlayable) {
 		playedCard.executeAction(this, ctrl);
-		return playedCard.isPlayableOver(this.getCurrentPlayedCard());
+		CardPilesManager.discard(playedCard);
+		if(playedCard.getColor() != Color.NONE)
+			wildSavedColor = new Card(playedCard.getColor(),Symbol.NONE);
+		}
+		PlayerManager.getCurrentPlayer().getHand().remove(playedCard);
+		return isPlayable;
 	}
 
 	@Override
 	public ICard drawOneCard(IPlayer player) {
-		//State variables? 
-		return CardPilesManager.drawCard();
+		ICard c = CardPilesManager.drawCard();
+		player.getHand().add(c);
+		return c;
+		
 	}
 
 	@Override
 	public void announceWinner(IController ctrl) {
 		ctrl.showMessage("El jugador "+PlayerManager.getPlayers().indexOf((this.getCurrentPlayer()))+"ha Ganado!");
+		
+	}
+
+	@Override
+	public void changeColor(IController ctrl,Color c) {
+		wildSavedColor = new Card(c,Symbol.NONE);
+		ctrl.showMessage("Se ha cambiado el color a"+wildSavedColor.getColor().getName());
 		
 	}
 

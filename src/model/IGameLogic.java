@@ -1,6 +1,7 @@
 package model;
 
 import controller.IController;
+import model.card.type.Color;
 import model.card.type.ICard;
 import model.player.type.IPlayer;
 
@@ -95,5 +96,7 @@ public interface IGameLogic {
    * @param ctrl Controller of the game.
    */
   void announceWinner(IController ctrl);
-
+  
+  void changeColor (IController ctrl, Color c);
+  
 }

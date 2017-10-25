@@ -34,7 +34,9 @@ public class RandomPlayer extends AbstractPlayer {
 		Color[] c = Color.getColors();
 		Random rand = new Random();
 		int i = rand.nextInt(4);
+		game.changeColor(ctrl, c[i]);
 		return c[i];	
+		
 	}
 
 }

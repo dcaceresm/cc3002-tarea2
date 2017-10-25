@@ -43,8 +43,9 @@ public class PlayerManager implements IPlayerManager {
 
 	@Override
 	public void startTurn() {
-		this.actualPlayer = this.nextPlayer;
-		this.nextPlayer = (d.getValue()+this.actualPlayer)%numPlayers;
+		actualPlayer = nextPlayer;
+		nextPlayer = (d.getValue()+actualPlayer)%numPlayers;
+		if(nextPlayer<0) { nextPlayer = numPlayers+nextPlayer;}
 		
 	}
 
